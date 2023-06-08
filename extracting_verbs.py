@@ -13,5 +13,11 @@ sentences = list(doc.sents)
 first_sentence = sentences[0]
 
 # Prints each word with what is it on the side (noun, verb, aux, etc.) very cool
-for token in first_sentence:
-    print(token.text, token.pos_)
+verbs = []
+for token in sentences:
+    if token.pos_ == "VERB":
+        verbs.append(token)
+
+print(verbs)
+
+
