@@ -9,15 +9,17 @@ with open("./phrases_used_alot.txt") as f:
 nlp = spacy.load("en_core_web_sm")
 
 doc = nlp(text)
-sentences = list(doc.sents)
-first_sentence = sentences[0]
 
-# Prints each word with what is it on the side (noun, verb, aux, etc.) very cool
-verbs = []
-for token in sentences:
+words = {'verbs':[], 'aux':[], 'adjective':[], 'pronoun':[]}
+for token in doc:
     if token.pos_ == "VERB":
-        verbs.append(token)
+        words['verbs'].append(token)
+    if token.pos_ == "AUX":
+        words["aux"].append(token)
+    if token.pos_ == "ADJ":
+        words["adjective"].append(token)
+    if token.pos_ == "PRON":
+        words["pronoun"].append(token)
 
-print(verbs)
 
-
+print(words)
