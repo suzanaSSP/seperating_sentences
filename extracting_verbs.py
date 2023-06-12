@@ -1,4 +1,5 @@
 import spacy
+import textacy
 
 with open("./phrases_used_alot.txt") as f:
     # f.read reads the text, the first replace acounts for paragraphs, 
@@ -7,19 +8,23 @@ with open("./phrases_used_alot.txt") as f:
     text = f.read().replace("\n\n", " ").replace("\n", " ")
 
 nlp = spacy.load("en_core_web_sm")
-
 doc = nlp(text)
 
-words = {'verbs':[], 'aux':[], 'adjective':[], 'pronoun':[]}
+patterns = [{'POS':'ADV'}, {'POS': 'VERB'}]
+
+words = {'verbs':[], 
+         'adjectives':[], 
+         'pronouns':[], 
+         'nouns/articles': (list(doc.noun_chunks)),
+         'verb_patterns' : textacy.extract.token_matches(doc, patterns=patterns)
+         }
+
 for token in doc:
     if token.pos_ == "VERB":
         words['verbs'].append(token)
-    if token.pos_ == "AUX":
-        words["aux"].append(token)
     if token.pos_ == "ADJ":
-        words["adjective"].append(token)
+        words["adjectives"].append(token)
     if token.pos_ == "PRON":
-        words["pronoun"].append(token)
+        words["pronouns"].append(token)
 
 
-print(words)
